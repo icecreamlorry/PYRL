@@ -20,7 +20,8 @@ def mapToString(inMap):
 
 def main():
     fullMap = open('map.txt', 'r').readlines()
-    mapSize = [len(fullMap[0]), len(fullMap)]
+    mapSize = [len(fullMap[0]) - 1, len(fullMap)]
+    position = [1, 1]
 
     clear()
     backBufferString = mapToString(fullMap)
@@ -28,13 +29,26 @@ def main():
 
     while True:
         char = click.getchar()
-        update(mapSize, char)
+        fullMap, position = update(fullMap, mapSize, char, position)
         draw(fullMap)
 
-def update(mapSize, inputChar):
-    #make the game react to input here
-    #this can't be empty so...
-    LB = 'god'
+def update(inMap, mapSize, inputChar, position):
+    if inputChar == b's':
+        if position[1] < mapSize[1] - 2:
+            position[1] += 1
+    if inputChar == b'w':
+        if position[1] > 1:
+            position[1] -= 1
+
+    if inputChar == b'd':
+        if position[0] < mapSize[0] - 2:
+            position[0] += 1
+    if inputChar == b'a':
+        if position[0] > 1:
+            position[0] -= 1
+
+    inMap = setCharInMap(inMap, position, "@")
+    return inMap, position
 
 def draw(inMap):
     clear()
